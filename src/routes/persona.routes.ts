@@ -1,9 +1,9 @@
 import { Router } from 'express'
-import { findAll } from '../controllers/ejemplo.controller'
+import { getAll } from '../controllers/persona.controller';
 
 const router = Router()
 
-router.get('/', findAll)
+router.get('/', getAll)
 
 // router.post('/')
 
