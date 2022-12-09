@@ -13,7 +13,7 @@ MateriaPersona.init(
       type: DataTypes.STRING(100),
       allowNull: false,
     },
-    codigo_materia: {
+    cod_materia: {
       type: DataTypes.STRING(8),
       allowNull: false,
     },

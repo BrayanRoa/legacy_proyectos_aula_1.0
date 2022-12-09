@@ -1,3 +1,7 @@
+export { ProyectoGrupo } from './proyecto-grupo.model';
+export { ProyectoPersona } from './proyecto-persona.model';
+export { MateriaProyecto } from './materia-proyecto.model';
+export { Proyecto } from './proyecto.model';
 export { Grupo } from "./grupo.model";
 export { MateriaPersona } from "./materia-persona.model";
 export { GrupoPersona } from "./grupo-persona.model";

@@ -12,7 +12,7 @@ GrupoPersona.init({
         type:DataTypes.STRING(100),
         allowNull:false
     },
-    idGrupo:{
+    id_grupo:{
         type:DataTypes.INTEGER,
         allowNull:false
     },

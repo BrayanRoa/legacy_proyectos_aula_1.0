@@ -1,6 +1,9 @@
 import { sequelize, Model, DataTypes } from "../conexion";
-import { ProyectoResponse } from "../../interfaces/proyecto-response.interface";
+import { ProyectoResponse } from "../../shared/interfaces/proyecto-response.interface";
 import { Avance } from "./avance.model";
+import { ProyectoGrupo } from './proyecto-grupo.model';
+import { MateriaProyecto } from "./materia-proyecto.model";
+import { ProyectoPersona } from './proyecto-persona.model';
 
 export class Proyecto extends Model implements ProyectoResponse {
   declare cod_proyecto: number;
@@ -49,3 +52,12 @@ Proyecto.init(
 
 Proyecto.hasMany(Avance, { foreignKey: "cod_proyecto" });
 Avance.belongsTo(Proyecto, { foreignKey: "cod_proyecto" });
+
+Proyecto.hasMany(ProyectoGrupo, {foreignKey:'cod_proyecto'})
+ProyectoGrupo.belongsTo(Proyecto, {foreignKey:'cod_proyecto'})
+
+Proyecto.hasMany(MateriaProyecto, {foreignKey:'cod_proyecto'})
+MateriaProyecto.belongsTo(Proyecto, {foreignKey:'cod_proyecto'})
+
+Proyecto.hasMany(ProyectoPersona, {foreignKey:'cod_proyecto'})
+ProyectoPersona.belongsTo(Proyecto, {foreignKey:'cod_proyecto'})

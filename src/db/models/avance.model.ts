@@ -1,4 +1,5 @@
 import { Model, sequelize, DataTypes } from "../conexion";
+import { Proyecto } from "./proyecto.model";
 
 export class Avance extends Model {}
 
@@ -15,7 +16,10 @@ Avance.init(
     },
     cod_proyecto: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      references: {
+        model: Proyecto,
+        key: "cod_proyecto",
+      },
     },
     descripcion: {
       type: DataTypes.TEXT,

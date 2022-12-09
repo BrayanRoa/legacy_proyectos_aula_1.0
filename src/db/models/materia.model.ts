@@ -1,7 +1,8 @@
-import { GrupoResponse, Materia } from "../../interfaces/materia-response.interface";
+import { GrupoResponse, Materia } from "../../shared/interfaces/materia-response.interface";
 import { Model, DataTypes, sequelize } from "../conexion";
 import {Grupo} from "./grupo.model";
 import { MateriaPersona } from "./materia-persona.model";
+import { MateriaProyecto } from "./materia-proyecto.model";
 
 export class Asignatura extends Model implements Materia{
   declare cod_asignatura: string;
@@ -12,7 +13,7 @@ export class Asignatura extends Model implements Materia{
 Asignatura.init(
   {
     cod_asignatura: {
-      type: DataTypes.STRING(10),
+      type: DataTypes.STRING(8),
       primaryKey: true,
     },
     nombre: {
@@ -34,3 +35,5 @@ Grupo.belongsTo(Asignatura,{foreignKey:'cod_materia'})
 Asignatura.hasMany(MateriaPersona, {foreignKey:'cod_materia'})
 MateriaPersona.belongsTo(Asignatura,{foreignKey:'cod_materia'})
 
+Asignatura.hasMany(MateriaProyecto, {foreignKey:'cod_materia'})
+MateriaProyecto.belongsTo(Asignatura, {foreignKey:'cod_materia'})

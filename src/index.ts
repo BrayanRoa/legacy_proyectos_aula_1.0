@@ -1,25 +1,25 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import express, { Application } from 'express'
 import cors from 'cors'
-import personaRouter from './routes/persona.routes'
 import { sequelize } from './db/conexion'
 import './db/models/index.models'
+import morgan from 'morgan'
+
+import {PersonaRouter} from './personas/persona.router'
+import { MateriaRouter } from './materias/materia.router';
 
 export class Server {
   private readonly app: Application
   private readonly PORT: string
-  private readonly rutas
 
   constructor () {
     this.app = express()
     this.PORT = process.env.PORT ?? '3000'
-    this.rutas = {
-      ejemplo: '/api/personas'
-    }
+  
 
     this.db()
     this.middlewares()
-    this.routes()
+    this.app.use('/api', this.routers())
   }
 
     async db () {
@@ -34,10 +34,14 @@ export class Server {
   private middlewares (): any {
     this.app.use(express.json())
     this.app.use(cors())
+    this.app.use(morgan('dev'))
   }
 
-  private routes () {
-    this.app.use(this.rutas.ejemplo, personaRouter)
+  routers():Array<express.Router>{
+    return [
+      new PersonaRouter().router,
+      new MateriaRouter().router
+    ]
   }
 
   listen () {

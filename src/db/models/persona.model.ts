@@ -1,9 +1,10 @@
 import { Model, DataTypes, sequelize } from "../conexion";
 import {Rol} from "./rol.model";
 import {TipoDocumento} from "./tipo-documento.model";
-import { PersonaResponse } from "../../interfaces/persona-response.interface";
+import { PersonaResponse } from "../../shared/interfaces/persona-response.interface";
 import { MateriaPersona } from "./materia-persona.model";
 import { GrupoPersona } from "./grupo-persona.model";
+import { ProyectoPersona } from "./proyecto-persona.model";
 
 export class Persona extends Model implements PersonaResponse {
   declare correo_institucional: string;
@@ -12,10 +13,8 @@ export class Persona extends Model implements PersonaResponse {
   declare cod_tipo_doc: number | null;
   declare cod_rol: number;
   declare codigo: string;
-  declare correo_personal: string | null;
   declare documento: string | null;
   declare celular: string | null;
-  declare semestres: number | null;
   declare img: string;
   declare perfil_completado: boolean;
 }
@@ -84,3 +83,6 @@ MateriaPersona.belongsTo(Persona, { foreignKey: "correo_institucional" });
 
 Persona.hasMany(GrupoPersona, {foreignKey:'correo_institucional'})
 GrupoPersona.belongsTo(Persona, {foreignKey:'correo_institucional'})
+
+Persona.hasMany(ProyectoPersona, {foreignKey:'correo_institucional'})
+ProyectoPersona.belongsTo(Persona, {foreignKey:'correo_institucional'})

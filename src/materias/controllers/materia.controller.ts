@@ -1,0 +1,44 @@
+import { Request, Response } from 'express';
+import { HttpResponse } from '../../shared/response/http-response';
+import { MateriaService } from '../services/materia.service';
+
+
+export class MateriaController{
+
+    private readonly httpResponse:HttpResponse;
+    private readonly materiasService:MateriaService
+
+    constructor(){
+        this.httpResponse = new HttpResponse()
+        this.materiasService = new MateriaService()
+    }
+
+    async getAllSubjects(_req:Request, res:Response){
+        try {
+            const data = await this.materiasService.findAllSubjects();
+            (data.length === 0)
+                ?this.httpResponse.NotFound(res, `No existen materias`)
+                :this.httpResponse.Ok(res, data)
+        } catch (error) {
+            this.httpResponse.Error(res, error)
+        }
+    }
+
+    async getOneCourse(req:Request, res:Response){
+        const {codigo} = req.params
+        try {
+            const data = await this.materiasService.findCourseByCode(codigo);
+            (!data)
+                ?this.httpResponse.NotFound(res, `No existe materia con codigo ${codigo}`)
+                :this.httpResponse.Ok(res, data)
+        } catch (error) {
+            this.httpResponse.Error(res, error)
+        }
+    }
+
+    //* un alumno o profesor puede visualizar sus materias
+    async getAllMySubjects(){
+        
+    }
+    
+}
