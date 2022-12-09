@@ -8,6 +8,7 @@ import { GrupoPersona } from '../../db/models/grupo-persona.model';
 
 export class PersonaService {
 
+  //* TODO: OJO AHORA ES MAIL-SERVICE
   // private readonly mail:Mail;
 
   constructor() {

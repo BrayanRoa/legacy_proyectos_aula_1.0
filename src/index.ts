@@ -7,6 +7,7 @@ import morgan from 'morgan'
 
 import {PersonaRouter} from './personas/persona.router'
 import { MateriaRouter } from './materias/materia.router';
+import { AuthRouter } from './auth/auth.router';
 
 export class Server {
   private readonly app: Application
@@ -39,6 +40,7 @@ export class Server {
 
   routers():Array<express.Router>{
     return [
+      new AuthRouter().router,
       new PersonaRouter().router,
       new MateriaRouter().router
     ]

@@ -8,11 +8,19 @@ sgMail.setApiKey(process.env.API_KEY_SEND_GRID ?? "");
 
 export default sgMail;
 
-export class Mail {
+export class MailService {
   private readonly materiaService: MateriaService;
 
   constructor() {
     this.materiaService = new MateriaService();
+  }
+
+  async mailValido(correo:string):Promise<boolean>{
+    const aux = correo.split('@')
+    if(aux[1] !== 'ufps.edu.co'){
+      return false
+    }
+    return true
   }
 
   async sendMails(persona: PersonaResponse, materia: string, grupo: string) {
