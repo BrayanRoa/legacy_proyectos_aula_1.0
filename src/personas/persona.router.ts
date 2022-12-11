@@ -12,7 +12,10 @@ export class PersonaRouter extends BaseRouter<
   }
 
   routes(): void {
-    this.router.get("/personas", (req: Request, res: Response) =>
+    this.router.get(
+      "/personas",
+      (req: Request, res: Response, next) => this.middleware.validarJwt(req, res, next),
+      (req: Request, res: Response) =>
       this.controller.getTeachers(req, res)
     );
 

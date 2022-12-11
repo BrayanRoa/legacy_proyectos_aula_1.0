@@ -12,7 +12,10 @@ export class MateriaRouter extends BaseRouter<
   }
 
   routes(): void {
-    this.router.get('/materias', (req, res)=> this.controller.getAllSubjects(req, res))
+    this.router.get(
+      '/materias',
+      (req, res, next) => this.middleware.validarJwt(req, res, next),
+      (req, res)=> this.controller.getAllSubjects(req, res))
 
     this.router.get('/materia/:codigo', (req, res)=> this.controller.getOneCourse(req, res))
   }

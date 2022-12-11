@@ -3,6 +3,7 @@ import express, { Application } from 'express'
 import cors from 'cors'
 import { sequelize } from './db/conexion'
 import './db/models/index.models'
+import "./helpers/expandir.express";
 import morgan from 'morgan'
 
 import {PersonaRouter} from './personas/persona.router'

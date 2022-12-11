@@ -1,17 +1,22 @@
 import { Request, Response, NextFunction } from "express";
 import { PersonaDTO } from "../dto/create-persona.dto";
-import { HttpResponse } from "../../shared/response/http-response";
 import { validate } from "class-validator";
 import { UpdatePersona } from "../dto/update-persona.dto";
 import { Asignatura } from "../../db/models/materia.model";
 import { Grupo } from "../../db/models/grupo.model";
 import { Persona } from "../../db/models/persona.model";
 import { GrupoPersona } from "../../db/models/grupo-persona.model";
+import { BaseMiddleware } from '../../shared/middlewares/base.middleware';
+import { HttpResponse } from "../../shared/response/http-response";
+import { TokenService } from "../../shared/services/token.service";
 
-export class PersonaMidlleware {
+export class PersonaMidlleware extends BaseMiddleware{
   constructor(
-    private readonly httpResponse: HttpResponse = new HttpResponse()
-  ) {}
+     tokenService: TokenService = new TokenService(),
+     httpResponse: HttpResponse = new HttpResponse()
+  ) {
+    super(httpResponse, tokenService)
+  }
 
   personValidator(req: Request, res: Response, next: NextFunction) {
     const {
@@ -135,4 +140,5 @@ export class PersonaMidlleware {
 
     return existe;
   }
+
 }

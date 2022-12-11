@@ -12,7 +12,7 @@ export class AuthController{
     async login(req:Request, res:Response){
         const {correo} = req.params
         try {
-            const auth = await this.authService.generateJwt(correo)
+            const auth = await this.authService.generarJWT(correo)
             this.httpResponse.Ok(res, auth)
         } catch (error) {
             console.log(error);
