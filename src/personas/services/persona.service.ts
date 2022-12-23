@@ -9,6 +9,7 @@ import readXlsxFile from "read-excel-file/node";
 import { FilesInterface } from "../../shared/interfaces/files.interface";
 import { Archivo } from "../../shared/services/archivo.service";
 import { Grupo } from "../../db/models/grupo.model";
+import fs from "fs"
 export class PersonaService {
   //* TODO: OJO AHORA ES MAIL-SERVICE
   // private readonly mail:Mail;
@@ -86,6 +87,10 @@ export class PersonaService {
         }
       }
     });
+
+    if(fs.existsSync(pathArchivo)){
+      fs.unlinkSync(pathArchivo)
+    }
   }
 
   async existPersonInGruop(
