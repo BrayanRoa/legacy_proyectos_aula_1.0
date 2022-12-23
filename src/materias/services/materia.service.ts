@@ -11,7 +11,7 @@ export class MateriaService {
       include: [
         {
           model: Grupo,
-          required: true,
+          required: false,
           attributes: ["nombre", "cod_grupo"],
         },
       ],
@@ -53,6 +53,7 @@ export class MateriaService {
     return subject
   }
 
+  //* 👀 NO ESTOY VALIDANDO QUE EXISTA LA MATERIA PERO SI QUE EXISTA CON UN GRUPO
   async registerGroupInCourse(materia:string, grupo:string, num_alumnos:number){
     const exist = await this.findCourseAndGroup(materia, grupo)
     if(exist){

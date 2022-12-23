@@ -65,7 +65,6 @@ export class PersonaService {
     grupo: string
   ) {
     const pathArchivo = (await this.archivo.guardarArchivo(archivo)) as string;
-
     await readXlsxFile(pathArchivo).then(async (rows) => {
       rows.shift();
 

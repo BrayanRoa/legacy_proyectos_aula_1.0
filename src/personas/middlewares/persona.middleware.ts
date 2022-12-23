@@ -10,6 +10,7 @@ import { BaseMiddleware } from "../../shared/middlewares/base.middleware";
 import { HttpResponse } from "../../shared/response/http-response";
 import { TokenService } from "../../shared/services/token.service";
 import { FilesInterface } from "../../shared/interfaces/files.interface";
+import { Op } from "sequelize";
 
 export class PersonaMidlleware extends BaseMiddleware {
   constructor(
@@ -79,9 +80,8 @@ export class PersonaMidlleware extends BaseMiddleware {
 
   async existGroupAndCourse(req: Request, res: Response, next: NextFunction) {
     const { materia, grupo } = req.params;
-    const { correo_institucional } = req.body;
+    const { correo_institucional } = req.persona ??= req.body;
     const course = await Asignatura.findByPk(materia);
-
     if (!course) {
       return this.httpResponse.NotFound(
         res,
@@ -90,7 +90,12 @@ export class PersonaMidlleware extends BaseMiddleware {
     }
 
     const group = await Grupo.findOne({
-      where: { cod_materia: materia, nombre: grupo },
+      where: {
+        [Op.or]:[
+          {cod_materia: materia, nombre: grupo},
+          {cod_materia: materia, cod_grupo: grupo}
+        ]
+      }
     });
 
     if (!group) {
