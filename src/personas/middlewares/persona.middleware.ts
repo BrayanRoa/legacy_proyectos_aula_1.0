@@ -6,16 +6,17 @@ import { Asignatura } from "../../db/models/materia.model";
 import { Grupo } from "../../db/models/grupo.model";
 import { Persona } from "../../db/models/persona.model";
 import { GrupoPersona } from "../../db/models/grupo-persona.model";
-import { BaseMiddleware } from '../../shared/middlewares/base.middleware';
+import { BaseMiddleware } from "../../shared/middlewares/base.middleware";
 import { HttpResponse } from "../../shared/response/http-response";
 import { TokenService } from "../../shared/services/token.service";
+import { FilesInterface } from "../../shared/interfaces/files.interface";
 
-export class PersonaMidlleware extends BaseMiddleware{
+export class PersonaMidlleware extends BaseMiddleware {
   constructor(
-     tokenService: TokenService = new TokenService(),
-     httpResponse: HttpResponse = new HttpResponse()
+    tokenService: TokenService = new TokenService(),
+    httpResponse: HttpResponse = new HttpResponse()
   ) {
-    super(httpResponse, tokenService)
+    super(httpResponse, tokenService);
   }
 
   personValidator(req: Request, res: Response, next: NextFunction) {
@@ -48,9 +49,9 @@ export class PersonaMidlleware extends BaseMiddleware{
     validate(valid, { whitelist: true, forbidNonWhitelisted: true }).then(
       (err) => {
         if (err.length > 0) {
-          this.httpResponse.Error(res, err);
+          return this.httpResponse.Error(res, err);
         } else {
-          next();
+          return next();
         }
       }
     );
@@ -65,7 +66,6 @@ export class PersonaMidlleware extends BaseMiddleware{
     valid.celular = celular;
     valid.img = img;
     valid.perfil_completado = perfil_completado;
-
     validate(valid, { whitelist: true, forbidNonWhitelisted: true }).then(
       (err) => {
         if (err.length > 0) {
@@ -112,7 +112,7 @@ export class PersonaMidlleware extends BaseMiddleware{
         `La persona ya esta registrada en el grupo ${grupo} de la materia ${materia}`
       );
     }
-    next();
+    return next();
   }
 
   private async existPersonInGruop(
@@ -141,4 +141,24 @@ export class PersonaMidlleware extends BaseMiddleware{
     return existe;
   }
 
+  existeArchivo(req: Request, res: Response, next: NextFunction) {
+
+    const extValidas = ['csv', 'xlsx', 'xls', 'xlsm']
+
+    if (
+      !req.files ||
+      Object.keys(req.files).length === 0 ||
+      !req.files.archivo
+    ) {
+      return this.httpResponse.NotFound(res,`No hay archivos en la petición.`)
+    }
+
+    const {name} = (req.files?.archivo) as unknown as FilesInterface
+    const aux = name.split('.')
+    
+    if(!extValidas.includes(aux[aux.length-1])){
+      return this.httpResponse.Error(res, `Extensión del archivo invalida - ext validas: ${extValidas}`)
+    }
+    next()
+  }
 }

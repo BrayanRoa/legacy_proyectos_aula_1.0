@@ -11,7 +11,7 @@ export enum HttpStatus{
 }
 
 export class HttpResponse{
-    Ok(res:Response, data:any):Response{
+    Ok(res:Response, data:any){
         return res.status(HttpStatus.OK).json({
             status:HttpStatus.OK,
             message:"Success",
@@ -58,18 +58,18 @@ export class HttpResponse{
                 message:"Bad Request",
                 data:data.parent.sqlMessage
             })
-        }else if(data.length > 0){
-            return res.status(HttpStatus.BAD_REQUEST).json({
-                status:HttpStatus.BAD_REQUEST,
-                message:"Bad Request",
-                data:`${data[0].value} ${data[0].constraints.contains}`
-            })
+        // // }else if(data.length > 0){
+        // //     return res.status(HttpStatus.BAD_REQUEST).json({
+        // //         status:HttpStatus.BAD_REQUEST,
+        // //         message:"Bad Request",
+        // //         data:`${data[0].value} ${data[0].constraints.contains}`
+        // //     })
         }else{
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
-                status:HttpStatus.INTERNAL_SERVER_ERROR,
-                message:"Internal Server Error",
-                data:data
+                status: HttpStatus.INTERNAL_SERVER_ERROR,
+                message: "Internal Server Error",
+                data: data
             })
-        }
-    }
+        }}
+    
 }

@@ -19,21 +19,23 @@ export class PersonaRouter extends BaseRouter<
       this.controller.getTeachers(req, res)
     );
 
-    this.router.get("/persona/:correo", (req, res) =>
-      this.controller.getPersonById(req, res)
+    this.router.get(
+      "/persona/:correo", 
+      (req, res, next) => this.middleware.validarJwt(req, res, next),
+      (req, res) => this.controller.getPersonById(req, res)
     );
 
     this.router.post(
-      "/createPerson",
-      (req, res, next) => [this.middleware.personValidator(req, res, next)],
+      "/createPersona",
+      (req, res, next) => this.middleware.personValidator(req, res, next),
+      (req, res, next) => this.middleware.validarJwt(req, res, next),
       (req: Request, res: Response) => this.controller.createUser(req, res)
     );
 
     this.router.patch(
-      "/updatePerson/:correo",
-      (req, res, next) => [
-        this.middleware.updatePersonaValidator(req, res, next),
-      ],
+      "/updatePersona/:correo",
+      (req, res, next) => this.middleware.updatePersonaValidator(req, res, next),
+      (req, res, next) => this.middleware.validarJwt(req, res, next),
       (req, res) => this.controller.updatePersona(req, res)
     );
 
@@ -42,6 +44,14 @@ export class PersonaRouter extends BaseRouter<
       (req, res, next) => [this.middleware.existGroupAndCourse(req, res, next)],
       (req, res) => this.controller.registerPersonInCourse(req, res)
     );
+
+    //* 👀 ⚠️ hay errores aqui de los header revisar
+    this.router.post(
+      "/personas/:materia/:grupo",
+      (req, res, next) => this.middleware.validarJwt(req, res, next),
+      (req, res, next) => this.middleware.existeArchivo(req, res, next),
+      (req, res) => this.controller.registerExcelOfPersonsInCourse(req, res)
+    )
 
     this.router.delete("/deletePerson/:id", (req, res) =>
       this.controller.deleteUser(req, res)

@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { HttpResponse } from "../../shared/response/http-response";
 import { PersonaService } from "../services/persona.service";
 import { PersonaDTO } from "../dto/create-persona.dto";
+import { FilesInterface } from "../../shared/interfaces/files.interface";
 
 export class PersonaController {
   constructor(
@@ -46,14 +47,17 @@ export class PersonaController {
   }
 
   async updatePersona(req: Request, res: Response) {
+    
     const { correo } = req.params
     try {
       const data = await this.personaService.updatePerson(correo, req.body);
-      (data[0] === 0)
-        ?this.httpResponse.Ok(res, `No se actualizo ningun campo`)
-        :this.httpResponse.Ok(res, `Campos actualizados con exito!!!`)
+      if(data[0] === 0){
+        return this.httpResponse.NotFound(res, `No se actualizo ningun campo`)
+      }
+      return this.httpResponse.Ok(res, `Campos actualizados con exito!!!`)
+      
     } catch (error) {
-      this.httpResponse.Error(res, error)
+      return this.httpResponse.Error(res, error)
     }
   }
 
@@ -62,6 +66,17 @@ export class PersonaController {
     try {
       await this.personaService.registerInCourse(materia, grupo, req.body)
       this.httpResponse.Ok(res, `Registro exitoso`)
+    } catch (error) {
+      this.httpResponse.Error(res, error)
+    }
+  }
+
+  async registerExcelOfPersonsInCourse(req: Request, res: Response){
+    const {materia, grupo} = req.params
+    try {
+      const file = req.files?.archivo as unknown as FilesInterface
+      const data = await this.personaService.insertExcelOfPersonsInCourse(file, materia, grupo);
+      this.httpResponse.Create(res, data)
     } catch (error) {
       this.httpResponse.Error(res, error)
     }

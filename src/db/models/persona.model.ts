@@ -1,4 +1,8 @@
-import { Model, DataTypes, sequelize } from "../conexion";
+import { 
+  Model, 
+  DataTypes, 
+  sequelize
+ } from "../conexion";
 import {Rol} from "./rol.model";
 import {TipoDocumento} from "./tipo-documento.model";
 import { PersonaResponse } from "../../shared/interfaces/persona-response.interface";

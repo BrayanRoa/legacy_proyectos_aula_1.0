@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { HttpResponse } from '../../shared/response/http-response';
 import { AuthService } from '../services/auth.service';
 export class AuthController{
+
     private readonly httpResponse:HttpResponse;
     private readonly authService: AuthService
     constructor(){
@@ -15,7 +16,6 @@ export class AuthController{
             const auth = await this.authService.generarJWT(correo)
             this.httpResponse.Ok(res, auth)
         } catch (error) {
-            console.log(error);
             this.httpResponse.Error(res, error)
         }
     }
